@@ -3,58 +3,164 @@
 template <typename T>
 void LinkedList<T>::printAll()
 {
-
+	Node<T>* cur = first;
+	while (cur)
+	{
+		cout << cur->book_name << " [" << cur->book_no << "]" << endl;
+		cur = cur->next;
+	}
 }
 
 template<typename T>
-void LinkedList<T>::insertLast(T & e)
+void LinkedList<T>::insertNode(const T& data1, const T& data2)
 {
 	if (first)
 	{
-		last->next = new Node<T>(e);
-		last = last->next;
+		Node<T>* cur=first;
+		Node<T>* prev=cur;
+		
+		Node<T>* node = new Node<T>(data1, data2);
+		if (size == 1)
+		{
+			if (cur->book_name < data2)
+			{
+				cur->next = node;
+			}
+			else
+			{
+				node->next = cur;
+				cur = node;
+			}
+			size++;
+		}
+		else
+		{
+			while (cur)
+			{
+				if (cur->book_name < data2)
+				{
+					if (cur->next == 0)
+					{
+						cur->next = node;
+						size++;
+						break;
+					}
+				}
+				else
+				{
+					if (cur == first)
+					{
+						node->next = first;
+						first = node;
+						size++;
+						break;
+					}
+					else
+					{
+						node->next = cur;
+						prev->next = node;
+						size++;
+						break;
+					}
+		
+				}
+				prev = cur;
+				cur = cur->next;
+			}
+		}
 	}
 	else
-		first = last = new Node<T>(e);
+	{
+		first = new Node<T>(data1, data2);
+		size++;
+	}
 }
 
 template<typename T>
-void LinkedList<T>::insertFirst(T & e)
+void LinkedList<T>::deleteNode(const T& data)
 {
-	Node<T>* a = new Node<T>(e);
-	a->next = first->next;
-	first->next = a;
+	if (size == 0)
+		throw "제거할 요소가 없습니다.";
+	else if (search(data) == -1)
+		throw "해당 요소는 존재하지 않습니다.";
+	else
+	{
+		if (search(data) == 0)
+		{
+			Node<T>* temp = getNode(search(data));
+			first = first->next;
+		}
+		else
+		{
+			Node<T>* prev = getNode(search(data) - 1);
+			Node<T>* temp = prev->next;
+			prev->next = temp->next;
+		}
+		size--;
+	}
+}
+
+
+
+template<typename T>
+int LinkedList<T>::search(const T & data)
+{
+	Node<T>* cur = first;
+	int index = 0;
+	while (cur)
+	{
+		if (data == cur->book_no)
+			return index;
+		index++;
+		cur = cur->next;
+	}
+	return -1;
 }
 
 template<typename T>
-void LinkedList<T>::insertAfter(T & e, Node<T>* node)
+int LinkedList<T>::getSize()
 {
-	Node<T>* a = new Node<T>(e);
-	a->next = node->next;
-	node->next = a;
+	return size;
 }
 
 template<typename T>
-void LinkedList<T>::deleteFirst()
+T LinkedList<T>::getBookNo(int n)
 {
-	if (first->next == 0)
-		throw "제거할 연결리스트가 없습니다.";
-	Node<T>* temp = first->next;
-	first->next = temp->next;
-	delete[] temp;
+	Node<T>* cur = first;
+	for (int i = 0; i < n; i++)
+	{
+		cur = cur->next;
+	}
+	return cur->book_no;
 }
 
 template<typename T>
-void LinkedList<T>::deleteAfter(Node<T>* node)
+T LinkedList<T>::getBookName(int n)
 {
-	if (p == nullptr) throw "널값입니다.";
-	Node<T>* temp = node->next;
-	node->next = temp->next;
-	delete[] temp;
+	Node<T>* cur = first;
+	for (int i = 0; i < n; i++)
+	{
+		cur = cur->next;
+	}
+	return cur->book_name;
 }
+
+template<typename T>
+Node<T>* LinkedList<T>::getNode(int n)
+{
+	Node<T>* cur = first;
+	for (int i = 0; i < n; i++)
+	{
+		cur = cur->next;
+	}
+	return cur;
+}
+
+
 
 template<typename T>
 LinkedList<T>::LinkedList()
 {
 	first = 0;
+	size = 0;
 }

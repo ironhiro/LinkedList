@@ -1,5 +1,4 @@
-#include "FileHandler.h"
-
+#include "ioHandler.h"
 
 enum 
 {
@@ -8,32 +7,46 @@ enum
 
 int main(int argc, char *argv[])
 {
-	int select = 0;
-	FileHandler fileHandler;
-	LinkedList<Book> list;
-	fileHandler.loadFile(argv[1]);
-	fileHandler.printMenu();
-	while (select != EXIT)
+	
+	if (argc != 1)
 	{
-		cout << "원하는 기능을 선택하세요 : ";
-		cin >> select;
-		switch (select)
+		int select = 0;
+		IOHandler fileHandler;
+
+		fileHandler.loadFile(argv[1]);
+		fileHandler.printMenu();
+
+		while (select != EXIT)
 		{
-		case INSERT:
-			cout << "도서번호와 도서명을 입력하세요 : ";
-			break;
-		case DELETE:
-			cout << "도서번호를 입력하세요 : ";
-			break;
-		case PRINT:
-			list.printAll();
-			break;
-		case EXIT:
-			cout << "종료합니다." << endl;
-			fileHandler.saveFile(argv[1]);
-			break;
+			string book_name, book_no;
+			cout << "원하는 기능을 선택하세요 : ";
+			cin >> select;
+			switch (select)
+			{
+			case INSERT:
+				cout << "도서번호와 도서명을 입력하세요 : ";
+				cin >> book_no;
+				getline(cin,book_name); 
+				book_name = book_name.substr(1); //공백 제거
+				fileHandler.insertBook(book_no, book_name);
+				break;
+			case DELETE:
+				cout << "도서번호를 입력하세요 : ";
+				cin >> book_no;
+				fileHandler.deleteBook(book_no);
+				break;
+			case PRINT:
+				fileHandler.printList();
+				break;
+			case EXIT:
+				fileHandler.saveFile(argv[1]);
+				cout << "종료합니다." << endl;
+				break;
+			}
 		}
 	}
+	
+	
 
 	return 0;
 }
