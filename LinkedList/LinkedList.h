@@ -1,8 +1,5 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std;
+#include "Book.h"
 
 template <typename T>
 class LinkedList;
@@ -12,10 +9,9 @@ class Node
 {
 	friend class LinkedList<T>;
 public:
-	Node(const T& data1,const T& data2) { book_no = data1; book_name = data2; next = 0; }
+	Node(const T& data) { this->data = data; }
 private:
-	T book_no;
-	T book_name;
+	T data;
 	Node<T> *next;
 };
 
@@ -28,15 +24,12 @@ private:
 	int size;
 public:
 	LinkedList();
+	~LinkedList();
 	void printAll();
-	void insertNode(const T& data1, const T& data2);
-	void deleteNode(const T& data);
-	
-	
-	int search(const T& data);
+	void insertNode(T& data);
+	void deleteNode(T& data);
+	int search(T& data);
 	int getSize();
-	T getBookNo(int n);
-	T getBookName(int n);
 	Node<T>* getNode(int n);
 };
 

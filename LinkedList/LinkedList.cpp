@@ -6,23 +6,23 @@ void LinkedList<T>::printAll()
 	Node<T>* cur = first;
 	while (cur)
 	{
-		cout << cur->book_name << " [" << cur->book_no << "]" << endl;
+		cout << cur->data << endl;
 		cur = cur->next;
 	}
 }
 
 template<typename T>
-void LinkedList<T>::insertNode(const T& data1, const T& data2)
+void LinkedList<T>::insertNode(T& data)
 {
 	if (first)
 	{
 		Node<T>* cur=first;
 		Node<T>* prev=cur;
 		
-		Node<T>* node = new Node<T>(data1, data2);
+		Node<T>* node = new Node<T>(data);
 		if (size == 1)
 		{
-			if (cur->book_name < data2)
+			if (cur->data < node->data)
 			{
 				cur->next = node;
 			}
@@ -37,7 +37,7 @@ void LinkedList<T>::insertNode(const T& data1, const T& data2)
 		{
 			while (cur)
 			{
-				if (cur->book_name < data2)
+				if (cur->data < node->data)
 				{
 					if (cur->next == 0)
 					{
@@ -71,18 +71,18 @@ void LinkedList<T>::insertNode(const T& data1, const T& data2)
 	}
 	else
 	{
-		first = new Node<T>(data1, data2);
+		first = new Node<T>(data);
 		size++;
 	}
 }
 
 template<typename T>
-void LinkedList<T>::deleteNode(const T& data)
+void LinkedList<T>::deleteNode(T& data)
 {
 	if (size == 0)
-		throw "제거할 요소가 없습니다.";
+		cout << "제거할 요소가 없습니다." << endl;
 	else if (search(data) == -1)
-		throw "해당 요소는 존재하지 않습니다.";
+		cout << "해당 요소는 존재하지 않습니다." << endl;
 	else
 	{
 		if (search(data) == 0)
@@ -103,13 +103,13 @@ void LinkedList<T>::deleteNode(const T& data)
 
 
 template<typename T>
-int LinkedList<T>::search(const T & data)
+int LinkedList<T>::search(T & data)
 {
 	Node<T>* cur = first;
 	int index = 0;
 	while (cur)
 	{
-		if (data == cur->book_no)
+		if (data == cur->data)
 			return index;
 		index++;
 		cur = cur->next;
@@ -123,31 +123,13 @@ int LinkedList<T>::getSize()
 	return size;
 }
 
-template<typename T>
-T LinkedList<T>::getBookNo(int n)
-{
-	Node<T>* cur = first;
-	for (int i = 0; i < n; i++)
-	{
-		cur = cur->next;
-	}
-	return cur->book_no;
-}
 
-template<typename T>
-T LinkedList<T>::getBookName(int n)
-{
-	Node<T>* cur = first;
-	for (int i = 0; i < n; i++)
-	{
-		cur = cur->next;
-	}
-	return cur->book_name;
-}
 
 template<typename T>
 Node<T>* LinkedList<T>::getNode(int n)
 {
+	if (n == -1)
+		return nullptr;
 	Node<T>* cur = first;
 	for (int i = 0; i < n; i++)
 	{
@@ -163,4 +145,17 @@ LinkedList<T>::LinkedList()
 {
 	first = 0;
 	size = 0;
+}
+
+template<typename T>
+LinkedList<T>::~LinkedList()
+{
+	Node<T>* cur = first;
+	Node<T>* next;
+	while (cur)
+	{
+		next = cur->next;
+		delete cur;
+		cur = next;
+	}
 }
