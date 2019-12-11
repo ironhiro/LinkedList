@@ -31,6 +31,7 @@ public:
 	int search(T& data);
 	int getSize();
 	Node<T>* getNode(int n);
+	T& getData(int n);
 };
 
 

@@ -138,6 +138,17 @@ Node<T>* LinkedList<T>::getNode(int n)
 	return cur;
 }
 
+template<typename T>
+T& LinkedList<T>::getData(int n)
+{
+	Node<T>* cur = first;
+	for (int i = 0; i < n; i++)
+	{
+		cur = cur->next;
+	}
+	return cur->data;
+}
+
 
 
 template<typename T>

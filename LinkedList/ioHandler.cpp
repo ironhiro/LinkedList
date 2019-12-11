@@ -31,23 +31,27 @@ void IOHandler::loadFile(string s)
 	fileName = s;
 	string book_no, book_name, line, token;
 	ifstream fin(fileName);
-	
-	
-	while (getline(fin,line))
+	if (fin)
 	{
-		for (int i = 0; i < line.length(); i++)
+		while (getline(fin, line))
 		{
-			if (line[i] == ' ') //첫번째 공백을 만나면
+			for (int i = 0; i < line.length(); i++)
 			{
-				book_no = line.substr(0, i);
-				book_name = line.substr(i + 1);
-				Book b(book_no, book_name);
-				list.insertNode(b);
-				break;//탈출
+				if (line[i] == ' ') //첫번째 공백을 만나면
+				{
+					book_no = line.substr(0, i);
+					book_name = line.substr(i + 1);
+					Book b(book_no, book_name);
+					list.insertNode(b);
+					break;//탈출
+				}
 			}
+
 		}
-		
 	}
+	else
+		cout << "파일이 존재하지 않습니다. 프로그램을 종료합니다." << endl;
+	
 	fin.close();
 }
 
@@ -56,7 +60,7 @@ void IOHandler::saveFile(string s)
 	ofstream fout(s);
 	for (int i = 0; i < list.getSize(); i++)
 	{
-		fout << list.getNode(i) << endl;
+		fout << list.getData(i) << endl;
 	}
 	fout.close();
 }

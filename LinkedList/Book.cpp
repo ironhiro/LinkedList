@@ -47,7 +47,7 @@ bool Book::operator>(Book& b)
 
 bool Book::operator>=(Book& b)
 {
-	if (book_name > b.book_name)
+	if (book_name >= b.book_name)
 		return true;
 	return false;
 }
@@ -83,7 +83,8 @@ ostream& operator<<(ostream& os, Book& b)
 
 ofstream& operator<<(ofstream& os, Book& b)
 {
-	// TODO: 여기에 반환 구문을 삽입합니다.
 	os << b.book_id << " " << b.book_name;
 	return os;
 }
+
+
